@@ -2,6 +2,9 @@
 #include <iostream>
 #include "GL/glew.h"
 #include "GL/wglew.h"
+#include "IwInput/input_manager.h"
+#include "graphics/mesh.h"
+#include "graphics/shader_program.h"
 
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param);
 
@@ -9,7 +12,7 @@ ATOM register_class(HINSTANCE h_instance) {
 	WNDCLASSEX wcex;
 	ZeroMemory(&wcex, sizeof(wcex));
 	wcex.cbSize = sizeof(wcex);
-	wcex.style = CS_HREDRAW | CS_HREDRAW | CS_OWNDC;
+	wcex.style = CS_HREDRAW | CS_OWNDC;
 	wcex.lpfnWndProc = win_proc;
 	wcex.hInstance = h_instance;
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
@@ -18,10 +21,8 @@ ATOM register_class(HINSTANCE h_instance) {
 	return RegisterClassEx(&wcex);
 }
 
-//temp
-LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param) {
-	std::cout << msg << std::endl;
-	return DefWindowProc(h_wnd, msg, w_parm, l_param);
+LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_param, LPARAM l_param) {
+	return  DefWindowProc(h_wnd, msg, w_param, l_param);;
 }
 
 int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_cmd_line, int n_cmd_show) {
@@ -45,7 +46,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	ZeroMemory(&fake_pfd, sizeof(fake_pfd));
 	fake_pfd.nSize = sizeof(fake_pfd);
 	fake_pfd.nVersion = 1;
-	fake_pfd.dwFlags - PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+	fake_pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
 	fake_pfd.iPixelType = PFD_TYPE_RGBA;
 	fake_pfd.cColorBits = 32;
 	fake_pfd.cAlphaBits = 8;
@@ -79,8 +80,8 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	}
 
 	HWND h_wnd = CreateWindow(
-		"Core", "Window",
-		WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+		"Core", "Space",
+		WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 		100, 100,
 		500, 500,
 		NULL, NULL,
@@ -127,7 +128,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	HGLRC rc = wglCreateContextAttribsARB(dc, 0, context_attribs);
 	if (rc == NULL) {
 		std::cout << "wglCreateContextAttribsARB() failed!";
-		return -1;
+		return 1;
 	}
 
 	wglMakeCurrent(NULL, NULL);
@@ -139,19 +140,29 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		return 1;
 	}
 
-	SetWindowText(h_wnd, (LPCSTR)glGetString(GL_VERSION));
 	ShowWindow(h_wnd, n_cmd_show);
 
-	glClearColor(0.129f, 0.586f, 0.949f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-	SwapBuffers(dc);
+	graphics::shader_program shader = graphics::shader_program("res/test.shader");
+
+	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 5);
+
+	enum player_input {
+		TURN,
+		FORWARD
+	};
 
 	while (true) {
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		shader.use_program();
+
 		MSG msg;
 		while (PeekMessage(&msg, h_wnd, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
+		SwapBuffers(dc);
 	}
 
 	fclose(fp);
