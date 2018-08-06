@@ -8,10 +8,8 @@
 namespace graphics {
 	class mesh {
 	private:
-		vertex_array * m_vertex_array;
+		vertex_array* m_vertex_array;
 		index_buffer* m_index_buffer;
-
-		static iwmath::vector3 F(const float& u, const float& v, const float& r);
 	public:
 		mesh(vertex_array* va, index_buffer* ib);
 		~mesh();

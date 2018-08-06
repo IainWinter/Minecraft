@@ -2,6 +2,7 @@
 #include <iostream>
 #include "GL/glew.h"
 #include "GL/wglew.h"
+#include "IwMath/matrix4.h"
 #include "IwInput/input_manager.h"
 #include "graphics/mesh.h"
 #include "graphics/shader_program.h"
@@ -21,8 +22,20 @@ ATOM register_class(HINSTANCE h_instance) {
 	return RegisterClassEx(&wcex);
 }
 
+bool running = true;
+
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_param, LPARAM l_param) {
-	return  DefWindowProc(h_wnd, msg, w_param, l_param);;
+	std::cout << msg << std::endl;
+	switch (msg) {
+	case WM_DESTROY:
+		PostQuitMessage(w_param);
+		break;
+	case WM_CLOSE:
+		running = false;
+		break;
+	default:
+		return DefWindowProc(h_wnd, msg, w_param, l_param);
+	}
 }
 
 int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_cmd_line, int n_cmd_show) {
@@ -83,7 +96,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		"Core", "Space",
 		WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 		100, 100,
-		500, 500,
+		1280, 720,
 		NULL, NULL,
 		h_instance, NULL);
 
@@ -144,26 +157,70 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 	graphics::shader_program shader = graphics::shader_program("res/test.shader");
 
-	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 5);
-
-	enum player_input {
-		TURN,
-		FORWARD
+	enum space_input {
+		FORWARD,
+		BACKWARD,
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN
 	};
 
-	while (true) {
-		glClear(GL_COLOR_BUFFER_BIT);
+	iwinput::input_manager inputManager = iwinput::input_manager();
+	unsigned int deviceId = inputManager.create_device(iwinput::KEYBOARD);
 
+	iwinput::input_context* context = inputManager.create_context("Spaceship");
+	context->bind_input(FORWARD, iwinput::W, deviceId);
+	context->bind_input(BACKWARD, iwinput::S, deviceId);
+	context->bind_input(LEFT, iwinput::A, deviceId);
+	context->bind_input(RIGHT, iwinput::D, deviceId);
+	context->bind_input(UP, iwinput::SPACE, deviceId);
+	context->bind_input(DOWN, iwinput::LEFT_SHIFT, deviceId);
+
+	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 4);
+
+	float rot = 0;
+	iwmath::vector3 pos;
+
+	iwmath::matrix4 projection = iwmath::matrix4::create_perspective_field_of_view(1.4f, 1280 / 720.0f, .001f, 1000);
+
+	iwmath::matrix4 world = iwmath::matrix4::identity;
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	while (running) {
+		glClear(GL_COLOR_BUFFER_BIT);
 		shader.use_program();
+
+		inputManager.update();
 
 		MSG msg;
 		while (PeekMessage(&msg, h_wnd, 0, 0, PM_REMOVE)) {
+			inputManager.queue_event(msg);
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 
+		if (context->get_state(FORWARD)) { pos.x += .1f; }
+		if (context->get_state(BACKWARD)) { pos.z -= .1f; }
+		if (context->get_state(LEFT)) { pos.x += .1f; }
+		if (context->get_state(RIGHT)) { pos.x -= .1f; }
+		if (context->get_state(UP)) { pos.y += .1f; }
+		if (context->get_state(DOWN)) { pos.y -= .1f; }
+
+		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(rot, rot, rot));
+		rot += .001f;
+
+		iwmath::matrix4 view = iwmath::matrix4::create_translation(pos);
+
+		glUniformMatrix4fv(0, 1, GL_FALSE, projection.elements);
+		glUniformMatrix4fv(4, 1, GL_FALSE, view.elements);
+		glUniformMatrix4fv(8, 1, GL_FALSE, world.elements);
+
 		SwapBuffers(dc);
 	}
+
+	delete mesh;
 
 	fclose(fp);
 	FreeConsole();
