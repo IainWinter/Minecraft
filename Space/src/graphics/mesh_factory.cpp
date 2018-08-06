@@ -1,6 +1,4 @@
 #include "graphics\mesh_factory.h"
-#include <iostream>
-
 #define ICO_X .525731112119133606f
 #define ICO_Z .850650808352039932f
 
@@ -91,8 +89,6 @@ namespace graphics {
 	unsigned int mesh_factory::create_vertex_for_edge(index_lookup_map& lookup, vert_list& verts, unsigned int first, unsigned int second) {
 		index_pair key = first > second ? index_pair(first, second) : index_pair(second, first);
 
-		std::cout << key.first << ", " << key.second << std::endl;
-
 		auto inserted = lookup.insert({ key, verts.size() });
 		if (inserted.second) {
 			auto& edge0 = verts[first];
@@ -106,6 +102,8 @@ namespace graphics {
 
 	void mesh_factory::sub_devide(vert_list& verts, unsigned int* index, unsigned int& current_index_count) {
 		index_lookup_map lookup;
+		unsigned int* next_index = new unsigned int[4 * current_index_count];
+		unsigned int next_index_count = 0;
 
 		unsigned int index_count = current_index_count;
 		for (unsigned int i = 0; i < index_count; i += 3) {
@@ -113,21 +111,15 @@ namespace graphics {
 			unsigned int mid1 = create_vertex_for_edge(lookup, verts, index[i + 1], index[i + ((i + 2) % 3)]);
 			unsigned int mid2 = create_vertex_for_edge(lookup, verts, index[i + 2], index[i + ((i + 3) % 3)]);
 
-			if (current_index_count > 15360) {
-				std::cout << "Over";
-			}
-
-			index[current_index_count++] = index[i];	 index[current_index_count++] = mid0; index[current_index_count++] = mid2;
-			index[current_index_count++] = index[i + 1]; index[current_index_count++] = mid1; index[current_index_count++] = mid0;
-			index[current_index_count++] = index[i + 2]; index[current_index_count++] = mid2; index[current_index_count++] = mid1;
-			index[current_index_count++] = mid0;	     index[current_index_count++] = mid1; index[current_index_count++] = mid2;
-
-			//result.push_back(index[i]);     result.push_back(mid0); result.push_back(mid2);
-			//result.push_back(index[i + 1]); result.push_back(mid1); result.push_back(mid0);
-			//result.push_back(index[i + 2]); result.push_back(mid2); result.push_back(mid1);
-			//result.push_back(mid0);         result.push_back(mid1); result.push_back(mid2);
+			next_index[next_index_count++] = index[i];	   next_index[next_index_count++] = mid0; next_index[next_index_count++] = mid2;
+			next_index[next_index_count++] = index[i + 1]; next_index[next_index_count++] = mid1; next_index[next_index_count++] = mid0;
+			next_index[next_index_count++] = index[i + 2]; next_index[next_index_count++] = mid2; next_index[next_index_count++] = mid1;
+			next_index[next_index_count++] = mid0;	       next_index[next_index_count++] = mid1; next_index[next_index_count++] = mid2;
 		}
 
-		std::cout << "d";
+		memcpy(index, next_index, next_index_count * sizeof(unsigned int));
+		current_index_count = next_index_count;
+
+		delete next_index;
 	}
 }

@@ -177,7 +177,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	context->bind_input(UP, iwinput::SPACE, deviceId);
 	context->bind_input(DOWN, iwinput::LEFT_SHIFT, deviceId);
 
-	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 4);
+	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 3);
 
 	float rot = 0;
 	iwmath::vector3 pos;
@@ -201,7 +201,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 			DispatchMessage(&msg);
 		}
 
-		if (context->get_state(FORWARD)) { pos.x += .1f; }
+		if (context->get_state(FORWARD)) { pos.z += .1f; }
 		if (context->get_state(BACKWARD)) { pos.z -= .1f; }
 		if (context->get_state(LEFT)) { pos.x += .1f; }
 		if (context->get_state(RIGHT)) { pos.x -= .1f; }
