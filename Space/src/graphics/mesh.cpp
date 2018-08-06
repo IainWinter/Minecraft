@@ -10,7 +10,7 @@ namespace graphics {
 	}
 
 	mesh::~mesh() {
-		//delete &m_vertex_array;
+		delete m_vertex_array;
 		delete m_index_buffer;
 	}
 

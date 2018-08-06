@@ -48,28 +48,18 @@ namespace graphics {
 	const unsigned int* mesh_factory::ico_index = ico_index_data;
 
 	mesh* mesh_factory::create_sphere(const unsigned int& resolution) {
-		vert_list verts = {
-			iwmath::vector3(-ICO_X, 0, ICO_Z),
-			iwmath::vector3( ICO_X, 0, ICO_Z),
-			iwmath::vector3(-ICO_X, 0,-ICO_Z),
-			iwmath::vector3( ICO_X, 0,-ICO_Z),
-			iwmath::vector3( 0, ICO_Z, ICO_X),
-			iwmath::vector3( 0, ICO_Z,-ICO_X),
-			iwmath::vector3( 0,-ICO_Z, ICO_X),
-			iwmath::vector3( 0,-ICO_Z,-ICO_X),
-			iwmath::vector3( ICO_Z, ICO_X, 0),
-			iwmath::vector3(-ICO_Z, ICO_X, 0),
-			iwmath::vector3( ICO_Z,-ICO_X, 0),
-			iwmath::vector3(-ICO_Z,-ICO_X, 0)
-		};
+		unsigned int vert_count = 12 + (30 * pow(4, resolution));
+		iwmath::vector3* verts = new iwmath::vector3[vert_count];
+		memcpy(verts, ico_verts, ico_vert_count * sizeof(iwmath::vector3));
 
 		unsigned int index_count = 60 * pow(4, resolution);
 		unsigned int* index = new unsigned int[index_count];
 		memcpy(index, ico_index, ico_index_count * sizeof(unsigned int));
 
 		unsigned int current_index_count = ico_index_count;
+		unsigned int current_vert_count = ico_vert_count;
 		for (unsigned int i = 0; i < resolution; i++) {
-			sub_devide(verts, index, current_index_count);
+			sub_devide(verts, index, current_index_count, current_vert_count);
 		}
 
 		graphics::vertex_buffer_layout* vbl = new graphics::vertex_buffer_layout();
@@ -78,7 +68,7 @@ namespace graphics {
 		graphics::vertex_array* va = new graphics::vertex_array();
 		graphics::index_buffer* ib = new graphics::index_buffer(index, index_count);
 
-		graphics::vertex_buffer* vb = new graphics::vertex_buffer(&verts[0], sizeof(iwmath::vector3) * verts.size());
+		graphics::vertex_buffer* vb = new graphics::vertex_buffer(verts, sizeof(iwmath::vector3) * vert_count);
 		va->AddBuffer(vb, vbl);
 
 		mesh* m = new mesh(va, ib);
@@ -86,30 +76,21 @@ namespace graphics {
 		return m;
 	}
 
-	unsigned int mesh_factory::create_vertex_for_edge(index_lookup_map& lookup, vert_list& verts, unsigned int first, unsigned int second) {
-		index_pair key = first > second ? index_pair(first, second) : index_pair(second, first);
-
-		auto inserted = lookup.insert({ key, verts.size() });
-		if (inserted.second) {
-			auto& edge0 = verts[first];
-			auto& edge1 = verts[second];
-			auto point = (edge0 + edge1).normalized_fast();
-			verts.push_back(point);
-		}
-
-		return inserted.first->second;
-	}
-
-	void mesh_factory::sub_devide(vert_list& verts, unsigned int* index, unsigned int& current_index_count) {
+	void mesh_factory::sub_devide(
+		iwmath::vector3* verts, 
+		unsigned int* index, 
+		unsigned int& current_index_count,
+		unsigned int& current_vert_count) 
+	{
 		index_lookup_map lookup;
 		unsigned int* next_index = new unsigned int[4 * current_index_count];
 		unsigned int next_index_count = 0;
 
 		unsigned int index_count = current_index_count;
 		for (unsigned int i = 0; i < index_count; i += 3) {
-			unsigned int mid0 = create_vertex_for_edge(lookup, verts, index[i],     index[i + ((i + 1) % 3)]);
-			unsigned int mid1 = create_vertex_for_edge(lookup, verts, index[i + 1], index[i + ((i + 2) % 3)]);
-			unsigned int mid2 = create_vertex_for_edge(lookup, verts, index[i + 2], index[i + ((i + 3) % 3)]);
+			unsigned int mid0 = create_vertex_for_edge(lookup, verts, index[i],     index[i + ((i + 1) % 3)], current_vert_count);
+			unsigned int mid1 = create_vertex_for_edge(lookup, verts, index[i + 1], index[i + ((i + 2) % 3)], current_vert_count);
+			unsigned int mid2 = create_vertex_for_edge(lookup, verts, index[i + 2], index[i + ((i + 3) % 3)], current_vert_count);
 
 			next_index[next_index_count++] = index[i];	   next_index[next_index_count++] = mid0; next_index[next_index_count++] = mid2;
 			next_index[next_index_count++] = index[i + 1]; next_index[next_index_count++] = mid1; next_index[next_index_count++] = mid0;
@@ -121,5 +102,25 @@ namespace graphics {
 		current_index_count = next_index_count;
 
 		delete next_index;
+	}
+
+	unsigned int mesh_factory::create_vertex_for_edge(
+		index_lookup_map& lookup, 
+		iwmath::vector3* verts, 
+		unsigned int first, 
+		unsigned int second, 
+		unsigned int& current_vert_count) 
+	{
+		index_pair key = first > second ? index_pair(first, second) : index_pair(second, first);
+
+		auto inserted = lookup.insert({ key, current_vert_count });
+		if (inserted.second) {
+			auto& edge0 = verts[first];
+			auto& edge1 = verts[second];
+			auto point = (edge0 + edge1).normalized_fast();
+			verts[current_vert_count++] = point;
+		}
+
+		return inserted.first->second;
 	}
 }

@@ -25,7 +25,6 @@ ATOM register_class(HINSTANCE h_instance) {
 bool running = true;
 
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_param, LPARAM l_param) {
-	std::cout << msg << std::endl;
 	switch (msg) {
 	case WM_DESTROY:
 		PostQuitMessage(w_param);
@@ -178,9 +177,11 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	context->bind_input(DOWN, iwinput::LEFT_SHIFT, deviceId);
 
 	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 3);
+	graphics::mesh* mesh1 = graphics::mesh::create_sphere(1, 1);
 
 	float rot = 0;
 	iwmath::vector3 pos;
+	iwmath::vector3 playerPos;
 
 	iwmath::matrix4 projection = iwmath::matrix4::create_perspective_field_of_view(1.4f, 1280 / 720.0f, .001f, 1000);
 
@@ -201,17 +202,18 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 			DispatchMessage(&msg);
 		}
 
-		if (context->get_state(FORWARD)) { pos.z += .1f; }
-		if (context->get_state(BACKWARD)) { pos.z -= .1f; }
-		if (context->get_state(LEFT)) { pos.x += .1f; }
-		if (context->get_state(RIGHT)) { pos.x -= .1f; }
-		if (context->get_state(UP)) { pos.y += .1f; }
-		if (context->get_state(DOWN)) { pos.y -= .1f; }
+		if (context->get_state(FORWARD))  { playerPos.z += .05f; }
+		if (context->get_state(BACKWARD)) { playerPos.z -= .05f; }
+		if (context->get_state(LEFT))	  { playerPos.x += .05f; }
+		if (context->get_state(RIGHT))	  { playerPos.x -= .05f; }
+		if (context->get_state(UP))		  { playerPos.y -= .05f; }
+		if (context->get_state(DOWN))	  { playerPos.y += .05f; }
 
-		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(rot, rot, rot));
+		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(0, rot, 0));
+		mesh1->draw(pos + iwmath::vector3(5, 0, 0), iwmath::quaternion::create_from_euler_angles(rot, 0, 0));
 		rot += .001f;
 
-		iwmath::matrix4 view = iwmath::matrix4::create_translation(pos);
+		iwmath::matrix4 view = iwmath::matrix4::create_translation(playerPos);
 
 		glUniformMatrix4fv(0, 1, GL_FALSE, projection.elements);
 		glUniformMatrix4fv(4, 1, GL_FALSE, view.elements);

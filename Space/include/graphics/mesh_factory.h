@@ -15,8 +15,18 @@ namespace graphics {
 		static const iwmath::vector3* ico_verts;
 		static const unsigned int* ico_index;
 
-		static unsigned int create_vertex_for_edge(index_lookup_map& lookup, vert_list& verts, unsigned int first, unsigned int second);
-		static void sub_devide(vert_list& verts, unsigned int* index, unsigned int& current_index_count);
+		static void sub_devide(
+			iwmath::vector3* verts, 
+			unsigned int* index, 
+			unsigned int& current_index_count, 
+			unsigned int& current_vert_count);
+
+		static unsigned int create_vertex_for_edge(
+			index_lookup_map& lookup, 
+			iwmath::vector3* verts, 
+			unsigned int first, 
+			unsigned int second, 
+			unsigned int& current_vert_count);
 	public:
 		static mesh* create_sphere(const unsigned int& resolution);
 	};
