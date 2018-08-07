@@ -3,6 +3,7 @@
 #include "GL/glew.h"
 #include "GL/wglew.h"
 #include "IwMath/matrix4.h"
+#include "IwMath/vector2.h"
 #include "IwInput/input_manager.h"
 #include "graphics/mesh.h"
 #include "graphics/shader_program.h"
@@ -35,6 +36,8 @@ LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_param, LPARAM l_param) 
 	default:
 		return DefWindowProc(h_wnd, msg, w_param, l_param);
 	}
+
+	return 0;
 }
 
 int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_cmd_line, int n_cmd_show) {
@@ -162,26 +165,33 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		LEFT,
 		RIGHT,
 		UP,
-		DOWN
+		DOWN,
+		X_AXIS,
+		Y_AXIS
 	};
 
 	iwinput::input_manager inputManager = iwinput::input_manager();
-	unsigned int deviceId = inputManager.create_device(iwinput::KEYBOARD);
+	unsigned int keyboardId = inputManager.create_device(iwinput::KEYBOARD);
+	unsigned int mouseId = inputManager.create_device(iwinput::MOUSE);
+	
 
 	iwinput::input_context* context = inputManager.create_context("Spaceship");
-	context->bind_input(FORWARD, iwinput::W, deviceId);
-	context->bind_input(BACKWARD, iwinput::S, deviceId);
-	context->bind_input(LEFT, iwinput::A, deviceId);
-	context->bind_input(RIGHT, iwinput::D, deviceId);
-	context->bind_input(UP, iwinput::SPACE, deviceId);
-	context->bind_input(DOWN, iwinput::LEFT_SHIFT, deviceId);
+	context->bind_input(FORWARD, iwinput::W, keyboardId);
+	context->bind_input(BACKWARD, iwinput::S, keyboardId);
+	context->bind_input(LEFT, iwinput::A, keyboardId);
+	context->bind_input(RIGHT, iwinput::D, keyboardId);
+	context->bind_input(UP, iwinput::SPACE, keyboardId);
+	context->bind_input(DOWN, iwinput::LEFT_SHIFT, keyboardId);
+
+	context->bind_input(X_AXIS, iwinput::X_AXIS, mouseId);
+	context->bind_input(Y_AXIS, iwinput::Y_AXIS, mouseId);
 
 	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 3);
-	graphics::mesh* mesh1 = graphics::mesh::create_sphere(1, 1);
 
 	float rot = 0;
 	iwmath::vector3 pos;
 	iwmath::vector3 playerPos;
+	iwmath::vector2 playerRot;
 
 	iwmath::matrix4 projection = iwmath::matrix4::create_perspective_field_of_view(1.4f, 1280 / 720.0f, .001f, 1000);
 
@@ -209,11 +219,13 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		if (context->get_state(UP))		  { playerPos.y -= .05f; }
 		if (context->get_state(DOWN))	  { playerPos.y += .05f; }
 
+		playerRot.x += context->get_state(X_AXIS);
+		playerRot.y += context->get_state(Y_AXIS);
+
 		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(0, rot, 0));
-		mesh1->draw(pos + iwmath::vector3(5, 0, 0), iwmath::quaternion::create_from_euler_angles(rot, 0, 0));
 		rot += .001f;
 
-		iwmath::matrix4 view = iwmath::matrix4::create_translation(playerPos);
+		iwmath::matrix4 view = iwmath::matrix4::create_translation(playerPos) * iwmath::matrix4::create_from_quaternion(iwmath::quaternion::create_from_euler_angles(playerRot.x, playerRot.y, 0.0f));
 
 		glUniformMatrix4fv(0, 1, GL_FALSE, projection.elements);
 		glUniformMatrix4fv(4, 1, GL_FALSE, view.elements);
