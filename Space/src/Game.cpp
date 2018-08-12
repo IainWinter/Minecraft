@@ -176,6 +176,8 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	iwinput::keyboard& k = inputManager.create_device<iwinput::keyboard>();
 	iwinput::mouse& m = inputManager.create_device<iwinput::mouse>();
 
+	inputManager.recenter_cursor_on_update(false);
+
 	iwinput::input_context* context = inputManager.create_context("Spaceship");
 	context->bind_input(FORWARD, iwinput::W, k.id());
 	context->bind_input(BACKWARD, iwinput::S, k.id());
@@ -214,27 +216,34 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		}
 
 		iwmath::vector3 moveDelta;
-		if (context->get_state(FORWARD))  { moveDelta.z += .05f; }
+		if (context->get_state(FORWARD)) { moveDelta.z += .05f; }
 		if (context->get_state(BACKWARD)) { moveDelta.z -= .05f; }
-		if (context->get_state(LEFT))	  { moveDelta.x += .05f; }
-		if (context->get_state(RIGHT))	  { moveDelta.x -= .05f; }
-		if (context->get_state(UP))		  { moveDelta.y -= .05f; }
-		if (context->get_state(DOWN))	  { moveDelta.y += .05f; }
+		if (context->get_state(LEFT)) { moveDelta.x += .05f; }
+		if (context->get_state(RIGHT)) { moveDelta.x -= .05f; }
+		if (context->get_state(UP)) { moveDelta.y += .05f; }
+		if (context->get_state(DOWN)) { moveDelta.y -= .05f; }
 
 		playerPos += moveDelta;
 
-		playerRot.x += context->get_state(X_AXIS);
-		playerRot.y += context->get_state(Y_AXIS);
+		iwmath::vector2 rotDelta;
+		rotDelta.x = context->get_state(X_AXIS);
+		rotDelta.y = context->get_state(Y_AXIS);
 
-		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(0, rot, 0));
-		rot += .001f;
+		std::cout << rotDelta << std::endl;
+
+		playerRot.x = fmod(playerRot.x + rotDelta.x, IW_PI * 2);
+		playerRot.y = fmod(playerRot.y + rotDelta.y, IW_PI * 2);
 
 		iwmath::vector3 forward = iwmath::vector3(
 			sin(playerRot.x) * cos(playerRot.y),
 			sin(playerRot.y),
 			cos(playerRot.x) * cos(playerRot.y));
+		forward.normalize_fast();
 
 		iwmath::matrix4 view = iwmath::matrix4::create_look_at(playerPos, playerPos - forward, iwmath::vector3::unit_y);
+
+		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(0, rot, 0));
+		rot += .001f;
 
 		glUniformMatrix4fv(0, 1, GL_FALSE, projection.elements);
 		glUniformMatrix4fv(4, 1, GL_FALSE, view.elements);
