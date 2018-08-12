@@ -184,7 +184,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	context->bind_input(LEFT, iwinput::A, k.id());
 	context->bind_input(RIGHT, iwinput::D, k.id());
 	context->bind_input(UP, iwinput::SPACE, k.id());
-	context->bind_input(DOWN, iwinput::LEFT_SHIFT, k.id());;
+	context->bind_input(DOWN, iwinput::LEFT_SHIFT, k.id());
 
 	context->bind_input(X_AXIS, iwinput::X_SPEED, m.id());
 	context->bind_input(Y_AXIS, iwinput::Y_SPEED, m.id());
