@@ -157,6 +157,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	}
 
 	ShowWindow(h_wnd, n_cmd_show);
+	ShowCursor(0);
 
 	graphics::shader_program shader = graphics::shader_program("res/test.shader");
 
@@ -218,8 +219,8 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		iwmath::vector3 moveDelta;
 		if (context->get_state(FORWARD)) { moveDelta.z += .05f; }
 		if (context->get_state(BACKWARD)) { moveDelta.z -= .05f; }
-		if (context->get_state(LEFT)) { moveDelta.x += .05f; }
-		if (context->get_state(RIGHT)) { moveDelta.x -= .05f; }
+		if (context->get_state(LEFT)) { moveDelta.x -= .05f; }
+		if (context->get_state(RIGHT)) { moveDelta.x += .05f; }
 		if (context->get_state(UP)) { moveDelta.y += .05f; }
 		if (context->get_state(DOWN)) { moveDelta.y -= .05f; }
 
@@ -229,16 +230,16 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		rotDelta.x = context->get_state(X_AXIS);
 		rotDelta.y = context->get_state(Y_AXIS);
 
-		std::cout << rotDelta << std::endl;
+		rotDelta.x *= 16 / 2.0f;
+		rotDelta.y *= 9 / 2.0f;
 
-		playerRot.x = fmod(playerRot.x + rotDelta.x, IW_PI * 2);
+		playerRot.x = fmod(playerRot.x - rotDelta.x, IW_PI * 2);
 		playerRot.y = fmod(playerRot.y + rotDelta.y, IW_PI * 2);
 
 		iwmath::vector3 forward = iwmath::vector3(
 			sin(playerRot.x) * cos(playerRot.y),
 			sin(playerRot.y),
 			cos(playerRot.x) * cos(playerRot.y));
-		forward.normalize_fast();
 
 		iwmath::matrix4 view = iwmath::matrix4::create_look_at(playerPos, playerPos - forward, iwmath::vector3::unit_y);
 
