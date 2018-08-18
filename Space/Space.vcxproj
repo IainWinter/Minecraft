@@ -164,6 +164,7 @@
     <None Include="res\test.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ecs_manager.h" />
     <ClInclude Include="include\graphics\index_buffer.h" />
     <ClInclude Include="include\graphics\mesh.h" />
     <ClInclude Include="include\graphics\mesh_factory.h" />
@@ -173,6 +174,8 @@
     <ClInclude Include="include\graphics\vertex_buffer_layout.h" />
     <ClInclude Include="include\io\file.h" />
     <ClInclude Include="include\util\pair_hash.h" />
+    <ClInclude Include="include\util\sparse_array.h" />
+    <ClInclude Include="include\util\sparse_set.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,6 +9,9 @@
 #include "graphics/mesh.h"
 #include "graphics/shader_program.h"
 
+//Test
+#include "util/sparse_array.h"
+
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param);
 
 ATOM register_class(HINSTANCE h_instance) {
@@ -201,8 +204,27 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 	iwmath::matrix4 world = iwmath::matrix4::identity;
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	sparse_set ss = sparse_set(10, 10);
+	ss.insert(2);
+	ss.insert(3);
+	ss.insert(4);
+	ss.remove(3);
+	ss.insert(3);
+	int i1 = ss.at(2);
+	int i2 = ss.at(3);
+	int i3 = ss.at(4);
 
+	sparse_array<float> sa = sparse_array<float>(10);
+	sa.insert(2, 1.0f);
+	sa.insert(3, 3.0f);
+	sa.insert(4, 5.0f);
+	sa.remove(3);
+	sa.insert(3, 78567.0f);
+	float* f1 = sa.at(2);
+	float* f2 = sa.at(3);
+	float* f3 = sa.at(4);
+	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader.use_program();
