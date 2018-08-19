@@ -205,6 +205,9 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	iwmath::matrix4 world = iwmath::matrix4::identity;
 	
 	iwecs::ecs_manager em = iwecs::ecs_manager();
+	em.add_component<iwecs::transform>(0, 1, 2, 3);
+	em.remove_component<iwecs::transform>(0);
+	em.add_component<iwecs::transform>(0, 4, 5, 6);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
