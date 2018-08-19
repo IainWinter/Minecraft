@@ -18,7 +18,7 @@ namespace graphics {
 	public:
 		vertex_buffer_layout() : m_stride(0) {}
 
-		template<typename T>
+		template<typename ComponentT>
 		void Push(unsigned int count) {
 			static_assert(false);
 		}

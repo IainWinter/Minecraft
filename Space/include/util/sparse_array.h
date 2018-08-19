@@ -7,6 +7,7 @@ class sparse_array {
 private:
 	ItemT* m_data;
 	sparse_set m_index;
+
 public:
 	sparse_array(unsigned int count);
 	~sparse_array();
@@ -14,7 +15,10 @@ public:
 	bool insert(unsigned int index, const ItemT& data);
 	bool remove(unsigned int index);
 	ItemT* at(unsigned int index);
-	void clear();
+	
+	inline void clear() {
+		m_index.clear();
+	}
 };
 
 template<typename ItemT>
@@ -43,7 +47,15 @@ bool sparse_array<ItemT>::insert(unsigned int index, const ItemT& data) {
 
 template<typename ItemT>
 bool sparse_array<ItemT>::remove(unsigned int index) {
-	return m_index.remove(index); //Data doesnt get switched around on the array side but i dont know why this matters because it should just change to be pointing to it hmm
+	unsigned int data_count = m_index.count();
+	int data_index = m_index.at(index);
+	bool data_has_index = data_index != -1;
+	if (data_has_index) {
+		m_data[data_index] = m_data[data_count - 1];
+		m_index.remove(index);
+	}
+
+	return data_has_index;
 }
 
 template<typename ItemT>

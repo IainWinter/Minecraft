@@ -42,6 +42,9 @@
     <ClCompile Include="src\graphics\mesh_factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\sparse_set.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\iwmath.dll" />
