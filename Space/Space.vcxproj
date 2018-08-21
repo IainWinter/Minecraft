@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\util\ecs_manager.cpp" />
     <ClCompile Include="src\util\sparse_set.cpp" />
     <ClCompile Include="src\graphics\mesh_factory.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -165,7 +166,8 @@
     <None Include="res\test.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ecs_manager.h" />
+    <ClInclude Include="include\ecs\component_pool.h" />
+    <ClInclude Include="include\ecs\ecs_manager.h" />
     <ClInclude Include="include\graphics\index_buffer.h" />
     <ClInclude Include="include\graphics\mesh.h" />
     <ClInclude Include="include\graphics\mesh_factory.h" />

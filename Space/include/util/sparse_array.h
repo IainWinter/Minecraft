@@ -19,6 +19,10 @@ public:
 	inline void clear() {
 		m_index.clear();
 	}
+
+	inline ItemT* data() const {
+		return m_data;
+	}
 };
 
 template<typename ItemT>
