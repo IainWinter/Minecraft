@@ -23,7 +23,13 @@ namespace iwecs {
 
 		template<typename SystemT, typename... ComponentsT>
 		void add_system() {
-			m_systems[0] = new SystemT();
+			std::size_t id = 0;
+			using expanded_ids = std::size_t[];
+			expanded_ids {
+				id += typeid(ComponentsT).hash_code()...
+			};
+
+			m_systems[id] = new SystemT();
 		}
 	};
 

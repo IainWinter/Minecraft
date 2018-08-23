@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\util\ecs_manager.cpp" />
+    <ClCompile Include="src\util\math_util.cpp" />
     <ClCompile Include="src\util\sparse_set.cpp" />
     <ClCompile Include="src\graphics\mesh_factory.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="include\graphics\vertex_buffer.h" />
     <ClInclude Include="include\graphics\vertex_buffer_layout.h" />
     <ClInclude Include="include\io\file.h" />
+    <ClInclude Include="include\util\math_util.h" />
     <ClInclude Include="include\util\pair_hash.h" />
     <ClInclude Include="include\util\sparse_array.h" />
     <ClInclude Include="include\util\sparse_set.h" />
