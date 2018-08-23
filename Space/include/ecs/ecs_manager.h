@@ -2,12 +2,15 @@
 
 #include <unordered_map>
 #include "component_pool.h"
+#include "component_system.h"
 
 namespace iwecs {
 	class ecs_manager {
 	private:
 		typedef std::unordered_map<std::size_t, icomponent_pool*> component_map;
+		typedef std::unordered_map<std::size_t, icomponent_system*> system_map;
 		component_map m_components;
+		system_map m_systems;
 	public:
 		ecs_manager();
 		~ecs_manager();
@@ -17,6 +20,11 @@ namespace iwecs {
 
 		template<typename ComponentT>
 		bool remove_component(unsigned int entity_id);
+
+		template<typename SystemT, typename... ComponentsT>
+		void add_system() {
+			m_systems[0] = new SystemT();
+		}
 	};
 
 	template<typename ComponentT, typename... ComponentArgsT>

@@ -17,7 +17,7 @@ namespace iwecs {
 		~component_pool();
 
 		void add_component(unsigned int entity_id, const ComponentT& component);
-		void remove_component(unsigned int entity_id);
+		bool remove_component(unsigned int entity_id);
 		ComponentT* get_component(unsigned int entity_id);
 	};
 
@@ -35,8 +35,8 @@ namespace iwecs {
 	}
 
 	template<typename ComponentT>
-	void component_pool<ComponentT>::remove_component(unsigned int entity_id) {
-		m_components.remove(entity_id);
+	bool component_pool<ComponentT>::remove_component(unsigned int entity_id) {
+		return m_components.remove(entity_id);
 	}
 
 	template<typename ComponentT>

@@ -96,5 +96,8 @@
     <ClInclude Include="include\ecs\component_pool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ecs\component_system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@
 #include "graphics/shader_program.h"
 
 //Test
-#include "ecs_manager.h"
+#include "ecs/ecs_manager.h"
 
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param);
 
@@ -204,10 +204,29 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 	iwmath::matrix4 world = iwmath::matrix4::identity;
 	
+	struct transform {
+		float x, y, z;
+
+		transform() {}
+
+		transform(float x, float y, float z)
+			: x(x), y(y), z(z) {}
+	};
+
+	class transform_system : public iwecs::component_system<transform> {
+		void process(component_pack& pack) {
+
+		}
+	};
+
+	iwecs::icomponent_system* s = new transform_system();
+
 	iwecs::ecs_manager em = iwecs::ecs_manager();
-	em.add_component<iwecs::transform>(0, 1, 2, 3);
-	em.remove_component<iwecs::transform>(0);
-	em.add_component<iwecs::transform>(0, 4, 5, 6);
+	em.add_component<transform>(0, 1, 2, 3);
+	em.remove_component<transform>(0);
+	em.add_component<transform>(0, 4, 5, 6);
+
+	em.add_system<transform_system, transform>();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
