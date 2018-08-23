@@ -146,6 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\util\ecs_manager.cpp" />
+    <ClCompile Include="src\util\sparse_set.cpp" />
     <ClCompile Include="src\graphics\mesh_factory.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\graphics\index_buffer.cpp" />
@@ -164,6 +166,9 @@
     <None Include="res\test.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ecs\component_pool.h" />
+    <ClInclude Include="include\ecs\component_system.h" />
+    <ClInclude Include="include\ecs\ecs_manager.h" />
     <ClInclude Include="include\graphics\index_buffer.h" />
     <ClInclude Include="include\graphics\mesh.h" />
     <ClInclude Include="include\graphics\mesh_factory.h" />
@@ -173,6 +178,8 @@
     <ClInclude Include="include\graphics\vertex_buffer_layout.h" />
     <ClInclude Include="include\io\file.h" />
     <ClInclude Include="include\util\pair_hash.h" />
+    <ClInclude Include="include\util\sparse_array.h" />
+    <ClInclude Include="include\util\sparse_set.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

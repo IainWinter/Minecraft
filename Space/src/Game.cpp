@@ -9,6 +9,9 @@
 #include "graphics/mesh.h"
 #include "graphics/shader_program.h"
 
+//Test
+#include "ecs/ecs_manager.h"
+
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param);
 
 //fools
@@ -202,9 +205,32 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	iwmath::matrix4 projection = iwmath::matrix4::create_perspective_field_of_view(1.4f, 1280 / 720.0f, .001f, 1000);
 
 	iwmath::matrix4 world = iwmath::matrix4::identity;
+	
+	struct transform {
+		float x, y, z;
+
+		transform() {}
+
+		transform(float x, float y, float z)
+			: x(x), y(y), z(z) {}
+	};
+
+	class transform_system : public iwecs::component_system<transform> {
+		void process(component_pack& pack) {
+
+		}
+	};
+
+	iwecs::icomponent_system* s = new transform_system();
+
+	iwecs::ecs_manager em = iwecs::ecs_manager();
+	em.add_component<transform>(0, 1, 2, 3);
+	em.remove_component<transform>(0);
+	em.add_component<transform>(0, 4, 5, 6);
+
+	em.add_system<transform_system, transform>();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 	while (running) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader.use_program();
