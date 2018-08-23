@@ -25,7 +25,7 @@ namespace iwecs {
 		void add_system() {
 			std::size_t id = 0;
 			using expanded_ids = std::size_t[];
-			expanded_ids {
+			expanded_ids { //should be inside of system in an array of component ids. Can use them to select needed components.
 				id += typeid(ComponentsT).hash_code()...
 			};
 
