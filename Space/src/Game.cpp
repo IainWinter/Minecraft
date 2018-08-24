@@ -213,7 +213,17 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 			: x(x), y(y), z(z) {}
 	};
 
-	class transform_system : public iwecs::component_system<transform> {
+	struct transform1 {
+		float x, y, z;
+
+		transform1() {}
+
+		transform1(float x, float y, float z)
+			: x(x), y(y), z(z) {
+		}
+	};
+
+	class transform_system : public iwecs::component_system<transform, transform1> {
 		void process(component_pack& pack) {
 			std::pair<unsigned int, transform*> t = std::get<0>(pack);
 			unsigned int count = t.first;
@@ -230,7 +240,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	em.remove_component<transform>(0);
 	em.add_component<transform>(0, 4, 5, 6);
 
-	em.add_system<transform_system, transform>();
+	em.add_system<transform_system, transform, transform1>();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
