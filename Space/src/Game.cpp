@@ -224,16 +224,10 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	};
 
 	class transform_system : public iwecs::component_system<transform, transform1> {
-		void process(component_pack& pack) {
-			std::pair<unsigned int, transform*> t = std::get<0>(pack);
-			unsigned int count = t.first;
-			for (unsigned int i = 0; i < count; i++) {
-				std::cout << t.second[i].x << t.second[i].y << t.second[i].z << std::endl;
-			}
+		void process(transform& transform, transform1& transform1) {
+
 		}
 	};
-
-	iwecs::icomponent_system* s = new transform_system();
 
 	iwecs::ecs_manager em = iwecs::ecs_manager();
 	em.add_component<transform>(0, 1, 2, 3);

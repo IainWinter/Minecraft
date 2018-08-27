@@ -8,11 +8,9 @@ namespace iwecs {
 
 	template<typename... ComponentTs>
 	class component_system : public icomponent_system {
-	protected:
-		typedef std::tuple<std::pair<unsigned int, ComponentTs*>...> component_pack;
 	public:
 		virtual ~component_system() {}
 
-		virtual void process(component_pack& components) = 0;
+		virtual void process(ComponentTs&... components) = 0;
 	};
 }
