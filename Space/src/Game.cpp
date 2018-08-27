@@ -11,6 +11,7 @@
 
 //Test
 #include "ecs/ecs_manager.h"
+#include "util/random.h"
 
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param);
 
@@ -194,6 +195,11 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 	context->bind_input(X_AXIS, iwinput::X_SPEED, m.id());
 	context->bind_input(Y_AXIS, iwinput::Y_SPEED, m.id());
+
+	for (size_t i = 0; i < 1000; i++) {
+		float a = random::generate_noise(i, 0 , 0);
+		std::cout << a << std::endl;
+	}
 
 	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 3);
 

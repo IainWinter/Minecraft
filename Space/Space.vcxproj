@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\graphics\random.cpp" />
+    <ClCompile Include="src\util\random.cpp" />
     <ClCompile Include="src\util\ecs_manager.cpp" />
     <ClCompile Include="src\util\math_util.cpp" />
     <ClCompile Include="src\util\sparse_set.cpp" />
@@ -174,6 +174,7 @@
     <ClInclude Include="include\graphics\index_buffer.h" />
     <ClInclude Include="include\graphics\mesh.h" />
     <ClInclude Include="include\graphics\mesh_factory.h" />
+    <ClInclude Include="include\util\random.h" />
     <ClInclude Include="include\graphics\shader_program.h" />
     <ClInclude Include="include\graphics\vertex_array.h" />
     <ClInclude Include="include\graphics\vertex_buffer.h" />
