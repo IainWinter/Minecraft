@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphics\random.cpp" />
     <ClCompile Include="src\util\ecs_manager.cpp" />
     <ClCompile Include="src\util\math_util.cpp" />
     <ClCompile Include="src\util\sparse_set.cpp" />

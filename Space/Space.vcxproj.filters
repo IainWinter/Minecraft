@@ -48,7 +48,11 @@
     <ClCompile Include="src\util\ecs_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="src\graphics\random.cpp">
+=======
     <ClCompile Include="src\util\math_util.cpp">
+>>>>>>> d8b961c6e3abea42297aec406772a3b7667bad88
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -14,6 +14,8 @@
 
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param);
 
+//fools
+
 ATOM register_class(HINSTANCE h_instance) {
 	WNDCLASSEX wcex;
 	ZeroMemory(&wcex, sizeof(wcex));
