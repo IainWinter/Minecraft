@@ -3,11 +3,10 @@
 #include "sparse_set.h"
 
 template<typename ItemT>
-class sparse_array {
+class sparse_array : public isparse_array {
 private:
 	ItemT* m_data;
 	sparse_set m_index;
-
 public:
 	sparse_array(unsigned int count);
 	~sparse_array();

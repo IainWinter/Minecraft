@@ -170,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="include\ecs\component_pool.h" />
     <ClInclude Include="include\ecs\component_system.h" />
+    <ClInclude Include="include\ecs\component_view.h" />
     <ClInclude Include="include\ecs\ecs_manager.h" />
     <ClInclude Include="include\graphics\index_buffer.h" />
     <ClInclude Include="include\graphics\mesh.h" />

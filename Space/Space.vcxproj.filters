@@ -32,6 +32,7 @@
     <ClInclude Include="include\util\sparse_array.h" />
     <ClInclude Include="include\util\sparse_set.h" />
     <ClInclude Include="include\util\random.h" />
+    <ClInclude Include="include\ecs\component_view.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\glew32.dll" />
