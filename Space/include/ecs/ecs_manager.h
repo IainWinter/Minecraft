@@ -70,6 +70,7 @@ namespace iwecs {
 		for (std::size_t i = 1; i < count; i++) {
 			component_ids[i] = *(ids.begin() + i);
 		}
+
 		component_id_pair id_pair = std::make_pair(count, component_ids);
 		system_pair pair = std::make_pair(id_pair, new SystemT());
 		m_systems.push_back(pair);

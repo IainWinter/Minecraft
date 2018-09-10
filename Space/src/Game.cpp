@@ -201,7 +201,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		std::cout << a << std::endl;
 	}
 
-	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 3);
+	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 0);
 
 	float rot = 0;
 	iwmath::vector3 pos;
@@ -243,6 +243,8 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	em.add_component<transform>(0, 4, 5, 6);
 
 	em.add_system<transform_system, transform, transform1>();
+
+	em.update();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {

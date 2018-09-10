@@ -3,7 +3,7 @@
 #include "sparse_set.h"
 
 template<typename ItemT>
-class sparse_array : public isparse_array {
+class sparse_array {
 private:
 	ItemT* m_data;
 	sparse_set m_index;
