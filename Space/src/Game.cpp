@@ -201,7 +201,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		std::cout << a << std::endl;
 	}
 
-	graphics::mesh* mesh = graphics::mesh::create_sphere(1, 0);
+	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 4);
 
 	float rot = 0;
 	iwmath::vector3 pos;

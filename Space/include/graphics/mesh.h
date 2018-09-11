@@ -16,6 +16,6 @@ namespace graphics {
 
 		void draw(const iwmath::vector3& position, const iwmath::quaternion& rotation) const;
 
-		static mesh* create_sphere(const float& scale, const unsigned int& resolution);
+		static mesh* create_icosphere(const float& scale, const unsigned int& resolution);
 	};
 }

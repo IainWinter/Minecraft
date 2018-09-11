@@ -28,6 +28,6 @@ namespace graphics {
 			unsigned int second, 
 			unsigned int& current_vert_count);
 	public:
-		static mesh* create_sphere(const unsigned int& resolution);
+		static mesh* create_icosphere(const unsigned int& resolution);
 	};
 }

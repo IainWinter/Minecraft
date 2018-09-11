@@ -25,7 +25,7 @@ namespace graphics {
 		m_index_buffer->draw();
 	}
 
-	mesh* mesh::create_sphere(const float& scale, const unsigned int& resolution) {
-		return mesh_factory::create_sphere(resolution);
+	mesh* mesh::create_icosphere(const float& scale, const unsigned int& resolution) {
+		return mesh_factory::create_icosphere(resolution);
 	}
 }

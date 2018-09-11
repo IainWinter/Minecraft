@@ -47,7 +47,7 @@ namespace graphics {
 	const iwmath::vector3* mesh_factory::ico_verts = ico_vert_data;
 	const unsigned int* mesh_factory::ico_index = ico_index_data;
 
-	mesh* mesh_factory::create_sphere(const unsigned int& resolution) {
+	mesh* mesh_factory::create_icosphere(const unsigned int& resolution) {
 		unsigned int vert_count = 12 + (30 * pow(4, resolution));
 		iwmath::vector3* verts = new iwmath::vector3[vert_count];
 		memcpy(verts, ico_verts, ico_vert_count * sizeof(iwmath::vector3));
