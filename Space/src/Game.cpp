@@ -201,7 +201,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		std::cout << a << std::endl;
 	}
 
-	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 4);
+	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 10);
 
 	float rot = 0;
 	iwmath::vector3 pos;
@@ -211,40 +211,19 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	iwmath::matrix4 projection = iwmath::matrix4::create_perspective_field_of_view(1.4f, 1280 / 720.0f, .001f, 1000);
 
 	iwmath::matrix4 world = iwmath::matrix4::identity;
-	
-	struct transform {
+
+	struct test {
 		float x, y, z;
 
-		transform() {}
 
-		transform(float x, float y, float z)
-			: x(x), y(y), z(z) {}
 	};
 
-	struct transform1 {
-		float x, y, z;
-
-		transform1() {}
-
-		transform1(float x, float y, float z)
-			: x(x), y(y), z(z) {
+	class transform_system : component_system<test> {
+	public:
+		void update(component_view<test>& components) {
+			
 		}
 	};
-
-	class transform_system : public iwecs::component_system<transform, transform1> {
-		void process(transform& transform, transform1& transform1) {
-
-		}
-	};
-
-	iwecs::ecs_manager em = iwecs::ecs_manager();
-	em.add_component<transform>(0, 1, 2, 3);
-	em.remove_component<transform>(0);
-	em.add_component<transform>(0, 4, 5, 6);
-
-	em.add_system<transform_system, transform, transform1>();
-
-	em.update();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {

@@ -1,16 +1,14 @@
 #pragma once
 
-#include <vector>
-#include "util/sparse_array.h"
+#include <tuple>
+#include "IwUtil/sparse_array.h"
+#include "component_array.h"
 
-namespace iwecs {
-	template<typename... ComponentsT>
-	class component_view {
-	private:
-		std::vector<sparse_array<ComponentsT>...> m_components;
-	public:
-		component_view(ComponentsT... components) {
-			m_components = std::vector<ComponentsT...>{ components };
-		}
-	};
-}
+template<typename... ComponentTs>
+class component_view {
+private:
+	std::tuple<component_array<ComponentTs>...> m_components;
+public:
+	component_view();
+	~component_view();
+};

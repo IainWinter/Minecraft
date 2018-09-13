@@ -91,11 +91,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>x:\include;$(ProjectDir)include%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>x:\include;$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib;x:\lib\win32\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>iwmath.dll.lib;iwinput.dll.lib;glew32.dll.lib;opengl32.lib;user32.lib;gdi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib;x:\lib\win32\x86;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>iwmath.dll.lib;iwinput.dll.lib;iwutil.dll.lib;glew32.dll.lib;opengl32.lib;user32.lib;gdi32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -104,7 +104,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>x:\include;$(ProjectDir)include%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>x:\include;$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)lib;x:\lib\win32\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -119,13 +119,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>b:\include;$(ProjectDir)include%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>x:\include;$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib;B:\lib\win32\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>iwmath.dll.lib;iwinput.dll.lib;glew32.dll.lib;opengl32.lib;user32.lib;gdi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib;x:\lib\win32\x86;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>iwmath.dll.lib;iwinput.dll.lib;iwutil.dll.lib;glew32.dll.lib;opengl32.lib;user32.lib;gdi32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,7 +136,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>x:\include;$(ProjectDir)include%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>x:\include;$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -147,9 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\util\random.cpp" />
-    <ClCompile Include="src\util\ecs_manager.cpp" />
     <ClCompile Include="src\util\math_util.cpp" />
-    <ClCompile Include="src\util\sparse_set.cpp" />
     <ClCompile Include="src\graphics\mesh_factory.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\graphics\index_buffer.cpp" />
@@ -165,11 +163,12 @@
     <None Include="bin\glfw3.dll" />
     <None Include="bin\iwinput.dll" />
     <None Include="bin\iwmath.dll" />
+    <None Include="bin\iwutil.dll" />
     <None Include="res\test.shader" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ecs\component_pool.h" />
-    <ClInclude Include="include\ecs\component_system.h" />
+    <ClInclude Include="include\ecs\component_array.h" />
+    <ClInclude Include="include\ecs\component_registry.h" />
     <ClInclude Include="include\ecs\component_view.h" />
     <ClInclude Include="include\ecs\ecs_manager.h" />
     <ClInclude Include="include\graphics\index_buffer.h" />
@@ -183,8 +182,6 @@
     <ClInclude Include="include\io\file.h" />
     <ClInclude Include="include\util\math_util.h" />
     <ClInclude Include="include\util\pair_hash.h" />
-    <ClInclude Include="include\util\sparse_array.h" />
-    <ClInclude Include="include\util\sparse_set.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
