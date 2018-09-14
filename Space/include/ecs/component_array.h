@@ -4,7 +4,7 @@
 
 class icomponent_array {
 public:
-	virtual ~icomponent_array() = 0;
+	virtual ~icomponent_array() {}
 };
 
 template<typename ComponentT>
@@ -17,7 +17,7 @@ public:
 
 	~component_array() {}
 
-	void add_component(int entity, ComponentT component) {
+	void add_component(int entity, const ComponentT& component) {
 		m_components.insert(entity, component);
 	}
 

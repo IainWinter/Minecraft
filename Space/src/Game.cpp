@@ -196,12 +196,12 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	context->bind_input(X_AXIS, iwinput::X_SPEED, m.id());
 	context->bind_input(Y_AXIS, iwinput::Y_SPEED, m.id());
 
-	for (size_t i = 0; i < 1000; i++) {
-		float a = random::generate_noise(i, 0 , 0);
-		std::cout << a << std::endl;
-	}
+	//for (size_t i = 0; i < 1000; i++) {
+	//	float a = random::generate_noise(i, 0 , 0);
+	//	std::cout << a << std::endl;
+	//}
 
-	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 10);
+	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 0);
 
 	float rot = 0;
 	iwmath::vector3 pos;
@@ -215,15 +215,14 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	struct test {
 		float x, y, z;
 
-
+		test() : x(0), y(0), z(0) {}
+		test(float x, float y, float z) : x(x), y(y), z(z) {}
+		~test() {}
 	};
 
-	class transform_system : component_system<test> {
-	public:
-		void update(component_view<test>& components) {
-			
-		}
-	};
+	ecs_manager em = ecs_manager();
+	em.add_component<test>(0);
+	em.add_component<test>(0, 1.0f, 2.0f, 3.0f);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {

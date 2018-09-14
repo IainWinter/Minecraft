@@ -13,8 +13,8 @@ class ecs_manager {
 private:
 	component_registry m_registry;
 public:
-	ecs_manager();
-	~ecs_manager();
+	ecs_manager() {}
+	~ecs_manager() {}
 
 	template<typename ComponentT, typename... ComponentArgsT>
 	void add_component(unsigned int entity, ComponentArgsT... args);
@@ -22,5 +22,6 @@ public:
 
 template<typename ComponentT, typename ...ComponentArgsT>
 void ecs_manager::add_component(unsigned int entity, ComponentArgsT... args) {
-	m_registry.add_component(entity, ComponentT(args...));
+	ComponentT c = ComponentT(args...);
+	m_registry.add_component<ComponentT>(entity, c);
 }
