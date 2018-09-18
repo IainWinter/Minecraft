@@ -12,6 +12,8 @@ class component_array : public icomponent_array {
 private:
 	iwutil::sparse_array<ComponentT> m_components;
 public:
+	using iterator = typename iwutil::sparse_array<ComponentT>::iterator;
+
 	component_array() 
 		: m_components(10) {}
 
@@ -29,7 +31,11 @@ public:
 		return m_components.at(entity);
 	}
 
-	std::pair<unsigned int, ComponentT*> get_components() {
-		return std::make_pair(m_components.count(), m_components.data());
+	iterator begin() {
+		return m_components.begin();
+	}
+
+	iterator end() {
+		return m_components.end();
 	}
 };

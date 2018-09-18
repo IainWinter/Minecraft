@@ -8,6 +8,9 @@ class component_registry {
 private:
 	typedef std::unordered_map<std::size_t, icomponent_array*> component_map;
 	component_map m_components;	
+
+	template<typename ComponentT>
+	component_array<ComponentT>* get_component_array();
 public:
 	component_registry() {}
 	~component_registry() {
@@ -22,14 +25,23 @@ public:
 	template<typename ComponentT>
 	bool remove_component(unsigned int entitiy);
 
-	template<typename ComponentT>
-	component_array<ComponentT>* get_component_array();
-
 	template<typename... ComponentsT>
 	component_view<ComponentsT...> view_components();
 
 	//view all components of a specified entity by id
 };
+
+template<typename ComponentT>
+component_array<ComponentT>* component_registry::get_component_array() {
+	typedef component_array<ComponentT>* array_ptr;
+
+	std::size_t id = typeid(ComponentT).hash_code();
+	if (m_components.find(id) != m_components.end()) {
+		return reinterpret_cast<array_ptr>(m_components[id]);
+	}
+
+	return nullptr;
+}
 
 template<typename ComponentT>
 void component_registry::add_component(unsigned int entity, const ComponentT& component) {
@@ -61,21 +73,9 @@ bool component_registry::remove_component(unsigned int entitiy) {
 	return false;
 }
 
-template<typename ComponentT>
-component_array<ComponentT>* component_registry::get_component_array() {
-	typedef component_array<ComponentT>* array_ptr;
-
-	std::size_t id = typeid(ComponentT).hash_code();
-	if (m_components.find(id) != m_components.end()) {
-		return reinterpret_cast<array_ptr>(m_components[id]);
-	}
-
-	return nullptr;
-}
-
 template<typename... ComponentsT>
 component_view<ComponentsT...> component_registry::view_components() {
 	return component_view<ComponentsT...>(
-		get_component_array<ComponentsT>()...
+		get_component_array<ComponentsT>()->begin()...
 	);
 }

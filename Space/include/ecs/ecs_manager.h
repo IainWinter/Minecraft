@@ -9,6 +9,10 @@
 //Component system -> Can be updated and given a component registry which can get specific views
 //Component system (templated) -> Can be updated and given only the specific types of components
 
+
+//Systems get sent iterators
+//Manager uses registry to get iterators to the component arrays
+
 class ecs_manager {
 private:
 	component_registry m_registry;

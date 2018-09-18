@@ -234,7 +234,6 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	em.add_component<test2>(0, 4.0f, 5.0f);
 
 	component_registry reg = em.get_registry();
-	component_array<test>* carr =  reg.get_component_array<test>();
 	component_view<test, test2> view  = reg.view_components<test, test2>();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
