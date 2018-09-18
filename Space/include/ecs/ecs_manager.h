@@ -16,6 +16,10 @@ public:
 	ecs_manager() {}
 	~ecs_manager() {}
 
+	component_registry& get_registry() {
+		return m_registry;
+	}
+
 	template<typename ComponentT, typename... ComponentArgsT>
 	void add_component(unsigned int entity, ComponentArgsT... args);
 };

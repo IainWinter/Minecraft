@@ -220,9 +220,22 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		~test() {}
 	};
 
+	struct test2 {
+		float x, y;
+
+		test2() : x(0), y(0) {}
+		test2(float x, float y) : x(x), y(y) {}
+		~test2() {}
+	};
+
 	ecs_manager em = ecs_manager();
-	em.add_component<test>(0);
 	em.add_component<test>(0, 1.0f, 2.0f, 3.0f);
+	em.add_component<test>(1, 1.1f, 2.1f, 3.1f);
+	em.add_component<test2>(0, 4.0f, 5.0f);
+
+	component_registry reg = em.get_registry();
+	component_array<test>* carr =  reg.get_component_array<test>();
+	component_view<test, test2> view  = reg.view_components<test, test2>();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
