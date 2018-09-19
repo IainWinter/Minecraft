@@ -11,10 +11,11 @@ private:
 	component_tuple m_components;
 	unsigned int m_count;
 public:
-	component_view(typename component_array<ComponentsT>::iterator... component_itrs) {
-		m_components = std::make_tuple<typename component_array<ComponentsT>::iterator...>(
-			component_itrs...
-			);
+	component_view(component_array<ComponentsT>*... component_arrays)
+		: m_components(std::make_tuple<typename component_array<ComponentsT>::iterator...>(
+			component_arrays->begin()...))
+	{
+		m_count = 0;
 	}
 
 	~component_view() {}

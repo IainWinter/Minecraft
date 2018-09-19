@@ -13,6 +13,8 @@
 #include "ecs/ecs_manager.h"
 #include "util/random.h"
 
+#include <vector>
+
 LRESULT CALLBACK win_proc(HWND h_wnd, UINT msg, WPARAM w_parm, LPARAM l_param);
 
 //fools
