@@ -76,6 +76,6 @@ bool component_registry::remove_component(unsigned int entitiy) {
 template<typename... ComponentsT>
 component_view<ComponentsT...> component_registry::view_components() {
 	return component_view<ComponentsT...>(
-		get_component_array<ComponentsT>()...
+		get_component_array<ComponentsT>()->begin()...
 	);
 }
