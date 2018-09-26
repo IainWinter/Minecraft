@@ -203,7 +203,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	//	std::cout << a << std::endl;
 	//}
 
-	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 0);
+	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 5);
 
 	float rot = 0;
 	iwmath::vector3 pos;
@@ -237,6 +237,8 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 	component_registry reg = em.get_registry();
 	component_view<test, test2> view  = reg.view_components<test, test2>();
+
+	//std::tuple<test*, test2*> group = view.get(0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
