@@ -182,26 +182,22 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 	iwinput::input_manager inputManager = iwinput::input_manager();
 	inputManager.set_window_info(h_wnd);
+
 	iwinput::keyboard& k = inputManager.create_device<iwinput::keyboard>();
 	iwinput::mouse& m = inputManager.create_device<iwinput::mouse>();
 
 	inputManager.recenter_cursor_on_update(false);
 
 	iwinput::input_context* context = inputManager.create_context("Spaceship");
-	context->bind_input(FORWARD, iwinput::W, k.id());
-	context->bind_input(BACKWARD, iwinput::S, k.id());
-	context->bind_input(LEFT, iwinput::A, k.id());
-	context->bind_input(RIGHT, iwinput::D, k.id());
-	context->bind_input(UP, iwinput::SPACE, k.id());
-	context->bind_input(DOWN, iwinput::LEFT_SHIFT, k.id());
+	context->bind_input(FORWARD,  iwinput::W,			 k.id());
+	context->bind_input(BACKWARD, iwinput::S,			 k.id());
+	context->bind_input(LEFT,	  iwinput::A,			 k.id());
+	context->bind_input(RIGHT,	  iwinput::D,			 k.id());
+	context->bind_input(UP,		  iwinput::SPACE,		 k.id());
+	context->bind_input(DOWN,	  iwinput::LEFT_SHIFT,   k.id());
 
 	context->bind_input(X_AXIS, iwinput::X_SPEED, m.id());
 	context->bind_input(Y_AXIS, iwinput::Y_SPEED, m.id());
-
-	//for (size_t i = 0; i < 1000; i++) {
-	//	float a = random::generate_noise(i, 0 , 0);
-	//	std::cout << a << std::endl;
-	//}
 
 	graphics::mesh* mesh = graphics::mesh::create_icosphere(1, 5);
 
@@ -211,34 +207,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 	iwmath::vector2 playerRot;
 
 	iwmath::matrix4 projection = iwmath::matrix4::create_perspective_field_of_view(1.4f, 1280 / 720.0f, .001f, 1000);
-
 	iwmath::matrix4 world = iwmath::matrix4::identity;
-
-	struct test {
-		float x, y, z;
-
-		test() : x(0), y(0), z(0) {}
-		test(float x, float y, float z) : x(x), y(y), z(z) {}
-		~test() {}
-	};
-
-	struct test2 {
-		float x, y;
-
-		test2() : x(0), y(0) {}
-		test2(float x, float y) : x(x), y(y) {}
-		~test2() {}
-	};
-
-	ecs_manager em = ecs_manager();
-	em.add_component<test>(0, 1.0f, 2.0f, 3.0f);
-	em.add_component<test>(1, 1.1f, 2.1f, 3.1f);
-	em.add_component<test2>(0, 4.0f, 5.0f);
-
-	component_registry reg = em.get_registry();
-	component_view<test, test2> view  = reg.view_components<test, test2>();
-
-	//std::tuple<test*, test2*> group = view.get(0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
@@ -255,12 +224,12 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 		}
 
 		iwmath::vector3 moveDelta;
-		if (context->get_state(FORWARD)) { moveDelta.z += .05f; }
+		if (context->get_state(FORWARD))  { moveDelta.z += .05f; }
 		if (context->get_state(BACKWARD)) { moveDelta.z -= .05f; }
-		if (context->get_state(LEFT)) { moveDelta.x -= .05f; }
-		if (context->get_state(RIGHT)) { moveDelta.x += .05f; }
-		if (context->get_state(UP)) { moveDelta.y += .05f; }
-		if (context->get_state(DOWN)) { moveDelta.y -= .05f; }
+		if (context->get_state(LEFT))	  { moveDelta.x -= .05f; }
+		if (context->get_state(RIGHT))	  { moveDelta.x += .05f; }
+		if (context->get_state(UP))		  { moveDelta.y += .05f; }
+		if (context->get_state(DOWN))	  { moveDelta.y -= .05f; }
 
 		playerPos += moveDelta;
 
@@ -281,7 +250,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 		iwmath::matrix4 view = iwmath::matrix4::create_look_at(playerPos, playerPos - forward, iwmath::vector3::unit_y);
 
-		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(0, rot, 0));
+		mesh->draw(pos, iwmath::quaternion::create_from_euler_angles(rot, rot, rot));
 		rot += .001f;
 
 		glUniformMatrix4fv(0, 1, GL_FALSE, projection.elements);

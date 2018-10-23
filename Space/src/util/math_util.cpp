@@ -7,6 +7,6 @@ namespace iwmath {
 			result += number;
 		}
 
-		return number;
+		return result;
 	}
 }
