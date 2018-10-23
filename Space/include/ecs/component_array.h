@@ -20,7 +20,7 @@ public:
 	~component_array() {}
 
 	void add_component(int entity, const ComponentT& component) {
-		m_components.insert(entity, component);
+		//m_components.insert(entity, component);
 	}
 
 	void remove_component(int entity) {

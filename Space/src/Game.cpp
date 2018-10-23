@@ -240,7 +240,7 @@ int CALLBACK WinMain(HINSTANCE h_instance, HINSTANCE h_prev_instance, LPSTR lp_c
 
 	//std::tuple<test*, test2*> group = view.get(0);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	while (running) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader.use_program();
